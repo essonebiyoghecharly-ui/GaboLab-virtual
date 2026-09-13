@@ -1,39 +1,57 @@
 import { useState } from 'react'
+import Accueil from './Accueil.jsx'
 
-export default function App() {
+function TPAmidon() {
   const [resultat, setResultat] = useState("")
+  const [materiel, setMateriel] = useState("Pomme de terre")
 
   const simuler = () => {
-    const materiel = document.querySelector('input').value
-    if(materiel.toLowerCase().includes("amidon") || materiel.toLowerCase().includes("pomme") || materiel.toLowerCase().includes("riz")) {
-      setResultat("✅ RÉSULTAT : Bleu-Violet ! Présence d'amidon détectée avec le Lugol.")
+    const alimentsAvecAmidon = ["pomme de terre", "riz", "pain", "maïs", "banane", "farine"]
+    const aAmidon = alimentsAvecAmidon.some(aliment => materiel.toLowerCase().includes(aliment))
+    
+    if(aAmidon) {
+      setResultat("✅ RÉSULTAT : Bleu-Violet ! \nPrésence d'amidon détectée avec le Lugol.")
     } else {
-      setResultat("❌ RÉSULTAT : Reste marron. Pas d'amidon détecté.")
+      setResultat("❌ RÉSULTAT : Reste marron-jaune. \nPas d'amidon détecté.")
     }
   }
 
   return (
-    <div style={{padding: '20px', fontFamily: 'Arial', maxWidth: '600px', margin: 'auto'}}>
-      <h1>LabGabon V6</h1>
-      <p>Construisez. Testez. Comprenez.</p>
-
-      <h2>Catalogue</h2>
-      <p>Des expériences prêtes à réaliser ou à personnaliser.</p>
-
-      <h2>Construire un TP</h2>
-      <p>Cliquez sur un élément ou glissez-le dans la paillasse.</p>
-      
-      <input type="text" placeholder="Ajoutez le matériel ici" defaultValue="Pommes de terre" style={{padding: '8px', width: '200px'}} />
+    <div>
+      <h2>TP : Mise en évidence de l'amidon</h2>
+      <select value={materiel} onChange={(e) => setMateriel(e.target.value)} style={{padding: '8px'}}>
+        <option>Pomme de terre</option>
+        <option>Riz cuit</option>
+        <option>Pain</option>
+        <option>Banane</option>
+        <option>Eau</option>
+      </select>
       <br/><br/>
-      
-      <button onClick={simuler} style={{padding: '10px 20px', background: '#4CAF50', color: 'white', border: 'none', cursor: 'pointer'}}>
+      <button onClick={simuler} style={{padding: '10px 20px', background: '#2e7d32', color: 'white', border: 'none', borderRadius: '5px'}}>
         Simuler
       </button>
-
-      <h2>Mes résultats</h2>
-      <div style={{border: '1px solid #ccc', padding: '15px', minHeight: '50px', background: '#f9f9f9'}}>
-        {resultat || "Clique sur 'Simuler' pour voir le résultat"}
+      <h3>Mes résultats</h3>
+      <div style={{border: '2px solid #2e7d32', padding: '15px', minHeight: '60px', background: '#e8f5e9', whiteSpace: 'pre-line'}}>
+        {resultat || "Clique sur 'Simuler'"}
       </div>
+    </div>
+  )
+}
+
+export default function App() {
+  const [page, setPage] = useState("accueil")
+
+  return (
+    <div style={{padding: '20px', fontFamily: 'Arial', maxWidth: '700px', margin: 'auto'}}>
+      <h1 style={{color: '#2e7d32'}}>LabGabon V6</h1>
+      <p><b>Construisez. Testez. Comprenez.</b></p>
+
+      <div style={{marginBottom: '20px'}}>
+        <button onClick={() => setPage("accueil")} style={{marginRight: '10px', padding: '8px'}}>Accueil</button>
+        <button onClick={() => setPage("tp")} style={{padding: '8px'}}>TP Amidon</button>
+      </div>
+
+      {page === "accueil" ? <Accueil /> : <TPAmidon />}
     </div>
   )
 }
